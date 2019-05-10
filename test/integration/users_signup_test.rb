@@ -12,4 +12,14 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     assert_template 'users/new'
   end
+
+  test "error_messages" do
+    get signup_path
+      post users_path, params: { user: { name:  "",
+                                         email: "user@invalid",
+                                         password:              "foo",
+                                         password_confirmation: "bar" } }
+    assert_template 'shared/_error_messages'
+  end
+
 end
