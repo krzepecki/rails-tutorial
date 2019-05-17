@@ -10,25 +10,26 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.paginate(page: params[:page])
+    @users = User.where(activated: true).paginate(page: params[:page])
   end
 
   def destroy
     User.find(params[:id]).destroy
-    flash[:success] = "Usunięto użytkownika"
+    flash[:success] = "Usunięto użytkownika."
     redirect_to users_url
   end
 
   def show
     @user = User.find(params[:id])
+    redirect_to root_url and return unless @user.activated?
   end
 
   def create
     @user = User.new(user_params)
     if @user.save
-      log_in @user
-      flash[:success] = 'Welcome to the Sample App!'
-      redirect_to @user
+      @user.send_activation_email
+      flash[:info] = "Sprawdź skrzynkę email, aby aktywować konto."
+      redirect_to root_url
     else
       render 'new'
     end
@@ -41,7 +42,7 @@ class UsersController < ApplicationController
   def update
       @user = User.find(params[:id])
       if @user.update_attributes(user_params)
-        flash[:succes] = "Profil zaaktualizowany"
+        flash[:succes] = "Profil zaaktualizowany."
         redirect_to @user
       else
         render 'edit'
@@ -59,7 +60,7 @@ class UsersController < ApplicationController
  def correct_user
    @user = User.find(params[:id])
    unless current_user?(@user)
-     flash[:danger] = "Brak uprawnień"
+     flash[:danger] = "Brak uprawnień."
         redirect_to(root_url)
    end
  end

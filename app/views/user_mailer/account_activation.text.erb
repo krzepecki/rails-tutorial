@@ -1,0 +1,5 @@
+Cześć <%= @user.name %>,
+
+Witaj w apce. Aby aktywować konto kliknij w link poniźej:
+
+<%= edit_account_activation_url(@user.activation_token, email: @user.email) %>
