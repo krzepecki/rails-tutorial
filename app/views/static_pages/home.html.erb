@@ -1,14 +1,5 @@
-<div class="center jumbotron">
-  <h1>Witaj w przykładowej aplikacji</h1>
-
-  <h2>
-    To jest strona główna przykładowej aplikacji
-    <a href="https://www.railstutorial.org/">Ruby on Rails Tutorial</a>
-
-  </h2>
-
-  <%= link_to "Zarejestruj się!", signup_path, class: "btn btn-lg btn-primary" %>
-</div>
-
- <%# <%= link_to image_tag("rails.png", alt: "Rails logo"),
-            'http://rubyonrails.org/' %>
+<% if logged_in? %>
+<%= render 'layouts/home_logged' %>
+<% else %>
+<%= render 'layouts/home_not_logged' %>
+<% end %>
