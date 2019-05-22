@@ -9,6 +9,10 @@ before_create :create_activation_digest
                                     uniqueness: {case_sensitive: false}
 
 has_many :microposts, dependent: :destroy
+has_many :active_relationships, class_name:  "Relationship",
+                                foreign_key: "follower_id",
+                                dependent:   :destroy
+
 has_secure_password
   validates :password, presence: true, length: {minimum: 6}, allow_nil: true
 
